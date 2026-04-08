@@ -35,8 +35,107 @@
         { type: 'life',    emoji: '❤️', name: 'Viață Extra',   duration: 0     }
     ];
 
-    /* ── Stare joc ── */
-    var state = {};
+    /* ── Traduceri ── */
+    var translations = {
+        ro: {
+            btnStart:             '🐣 Începe Jocul',
+            btnStats:             '📊 Statistici',
+            btnSettings:          '⚙️ Setări',
+            subtitle:             'Prinde ouăle de Paște! 🥚✨',
+            howToPlay:            'Cum se joacă:',
+            instrColoredEggs:     '🥚 Prinde ouăle colorate → <strong>10 pct</strong>',
+            instrGlitterEggs:     '✨ Ouă cu glitter → <strong>25 pct</strong>',
+            instrGoldenEggs:      '⭐ Ouă aurii → <strong>50 pct</strong>',
+            instrBadEggs:         '🖤 Evită ouăle stricate → <strong>-20 pct</strong>',
+            instrLives:           '❤️ Ai 3 vieți — nu lăsa ouăle bune să cadă!',
+            hudScoreLabel:        'Scor',
+            hudHighScoreLabel:    'High Score',
+            hudLivesLabel:        'Vieți',
+            hudLevelLabel:        'Nivel ',
+            pauseTitle:           '⏸️ Pauză',
+            btnResume:            '▶️ Continuă',
+            btnQuit:              '🏠 Meniu',
+            levelUpMsg:           'Bravo! Continuă tot așa! 🥚',
+            newHighscoreBanner:   '🏆 Nou Record! 🏆',
+            goScoreLabel:         'Scor Final',
+            goHighScoreLabel:     'High Score',
+            goLevelLabel:         'Nivel Maxim',
+            goEggsLabel:          'Ouă Prinse',
+            goTimeLabel:          'Timp',
+            btnPlayAgain:         '🔄 Joacă din Nou',
+            btnGotoMenu:          '🏠 Meniu Principal',
+            statsTitle:           '📊 Statisticile Tale',
+            statHighScoreLabel:   'High Score',
+            statEggsLabel:        'Total Ouă Prinse',
+            statLevelLabel:       'Cel Mai Mare Nivel',
+            statTimeLabel:        'Timp Total Jucat',
+            statGamesLabel:       'Partide Jucate',
+            statLastLabel:        'Ultimul Scor',
+            btnResetStats:        '🗑️ Resetează Statistici',
+            btnStatsBack:         '← Înapoi',
+            settingsTitle:        '⚙️ Setări',
+            labelSound:           '🔊 Efecte Sonore',
+            labelMusic:           '🎵 Muzică Fundal',
+            labelLang:            '🌐 Limbă',
+            btnSettingsClose:     '✅ Salvează'
+        },
+        en: {
+            btnStart:             '🐣 Start Game',
+            btnStats:             '📊 Statistics',
+            btnSettings:          '⚙️ Settings',
+            subtitle:             'Catch the Easter eggs! 🥚✨',
+            howToPlay:            'How to play:',
+            instrColoredEggs:     '🥚 Catch colored eggs → <strong>10 pts</strong>',
+            instrGlitterEggs:     '✨ Glitter eggs → <strong>25 pts</strong>',
+            instrGoldenEggs:      '⭐ Golden eggs → <strong>50 pts</strong>',
+            instrBadEggs:         '🖤 Avoid rotten eggs → <strong>-20 pts</strong>',
+            instrLives:           '❤️ You have 3 lives — don\'t let good eggs fall!',
+            hudScoreLabel:        'Score',
+            hudHighScoreLabel:    'High Score',
+            hudLivesLabel:        'Lives',
+            hudLevelLabel:        'Level ',
+            pauseTitle:           '⏸️ Pause',
+            btnResume:            '▶️ Resume',
+            btnQuit:              '🏠 Menu',
+            levelUpMsg:           'Great! Keep going! 🥚',
+            newHighscoreBanner:   '🏆 New Record! 🏆',
+            goScoreLabel:         'Final Score',
+            goHighScoreLabel:     'High Score',
+            goLevelLabel:         'Max Level',
+            goEggsLabel:          'Eggs Caught',
+            goTimeLabel:          'Time',
+            btnPlayAgain:         '🔄 Play Again',
+            btnGotoMenu:          '🏠 Main Menu',
+            statsTitle:           '📊 Your Statistics',
+            statHighScoreLabel:   'High Score',
+            statEggsLabel:        'Total Eggs Caught',
+            statLevelLabel:       'Highest Level',
+            statTimeLabel:        'Total Time Played',
+            statGamesLabel:       'Games Played',
+            statLastLabel:        'Last Score',
+            btnResetStats:        '🗑️ Reset Statistics',
+            btnStatsBack:         '← Back',
+            settingsTitle:        '⚙️ Settings',
+            labelSound:           '🔊 Sound Effects',
+            labelMusic:           '🎵 Background Music',
+            labelLang:            '🌐 Language',
+            btnSettingsClose:     '✅ Save'
+        }
+    };
+
+    /** Aplică traducerile limbii selectate pe toate elementele cu data-i18n */
+    function applyLanguage(lang) {
+        var t = translations[lang] || translations['ro'];
+        var elements = document.querySelectorAll('[data-i18n]');
+        for (var i = 0; i < elements.length; i++) {
+            var key = elements[i].getAttribute('data-i18n');
+            if (t[key] !== undefined) {
+                elements[i].innerHTML = t[key];
+            }
+        }
+    }
+
+
 
     /* ── Referințe DOM ── */
     var dom = {};
@@ -44,8 +143,7 @@
     /* ── Input ── */
     var keys = { left: false, right: false };
     var touchStartX = null;
-    var dragStartX  = null;
-    var dragBaseX   = null;
+    var isDragging  = false;
 
     /* ── Timer-e ── */
     var spawnTimer   = null;
@@ -137,6 +235,7 @@
         dom.selectLang.value    = settings.lang || 'ro';
         Audio.setEnabled(settings.sound);
         Audio.setMusicEnabled(settings.music);
+        applyLanguage(settings.lang || 'ro');
     }
 
     /* ── Navigare ecrane ── */
@@ -214,8 +313,10 @@
                 lang:  dom.selectLang.value
             };
             Storage.saveSettings(settings);
+            Audio.init();
             Audio.setEnabled(settings.sound);
             Audio.setMusicEnabled(settings.music);
+            applyLanguage(settings.lang);
             dom.modalSettings.classList.add('hidden');
         });
 
@@ -266,21 +367,24 @@
 
     function onMouseDown(e) {
         if (!state.running || state.paused) return;
-        dragStartX = e.clientX;
-        dragBaseX  = state.playerX;
+        isDragging = true;
+        var areaW = dom.gameArea.clientWidth;
+        var halfW = getPlayerHalfWidth();
+        var rect  = dom.gameArea.getBoundingClientRect();
+        state.playerX = Math.max(halfW, Math.min(areaW - halfW, e.clientX - rect.left));
+        updatePlayerDOM();
         dom.player.style.cursor = 'grabbing';
     }
     function onMouseMove(e) {
-        if (!state.running || state.paused || dragStartX === null) return;
-        var dx    = e.clientX - dragStartX;
+        if (!state.running || state.paused || !isDragging) return;
         var areaW = dom.gameArea.clientWidth;
         var halfW = getPlayerHalfWidth();
-        state.playerX = Math.max(halfW, Math.min(areaW - halfW, dragBaseX + dx));
+        var rect  = dom.gameArea.getBoundingClientRect();
+        state.playerX = Math.max(halfW, Math.min(areaW - halfW, e.clientX - rect.left));
         updatePlayerDOM();
     }
     function onMouseUp() {
-        dragStartX = null;
-        dragBaseX  = null;
+        isDragging = false;
         if (dom.player) dom.player.style.cursor = 'grab';
     }
 
@@ -298,6 +402,7 @@
         state = {
             running:     true,
             paused:      false,
+            levelingUp:  false,
             score:       0,
             highScore:   Storage.getHighScore(),
             lives:       INITIAL_LIVES,
@@ -336,7 +441,7 @@
     /* ── Game loop principal ── */
     function gameLoop(timestamp) {
         if (!state.running) return;
-        if (state.paused) {
+        if (state.paused || state.levelingUp) {
             rafId = requestAnimationFrame(gameLoop);
             return;
         }
@@ -664,9 +769,12 @@
     function showLevelUpOverlay() {
         dom.newLevelNum.textContent = state.level;
         dom.levelUpOverlay.classList.remove('hidden');
+        state.levelingUp = true;
         spawnLevelParticles();
         setTimeout(function () {
             dom.levelUpOverlay.classList.add('hidden');
+            state.levelingUp = false;
+            lastTime = null; // evităm un delta-time mare la reluare
         }, 2000);
     }
 

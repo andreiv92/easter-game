@@ -13,7 +13,10 @@
 
     /** Inițializează AudioContext (lazy, la primul interact utilizator) */
     function init() {
-        if (ctx) return;
+        if (ctx) {
+            if (ctx.state === 'suspended') ctx.resume();
+            return;
+        }
         try {
             var AudioCtx = window.AudioContext || window.webkitAudioContext;
             if (!AudioCtx) return;
@@ -149,7 +152,12 @@
     // ── Muzică de fundal (simplă, procedurală) ──
 
     function startMusic() {
-        if (!musicEnabled || !ctx) return;
+        if (!musicEnabled) return;
+        init();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
         stopMusic();
         try {
             musicGain = ctx.createGain();
@@ -218,10 +226,7 @@
     /** Setează starea muzicii (on/off) */
     function setMusicEnabled(val) {
         musicEnabled = !!val;
-        if (musicEnabled) {
-            init();
-            startMusic();
-        } else {
+        if (!musicEnabled) {
             stopMusic();
         }
     }
