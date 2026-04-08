@@ -153,6 +153,9 @@
     var touchStartX = null;
     var isDragging  = false;
 
+    /* ── Stare joc ── */
+    var state = {};
+
     /* ── Timer-e ── */
     var spawnTimer   = null;
     var lastTime     = null;
