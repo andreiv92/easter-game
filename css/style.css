@@ -1,0 +1,861 @@
+/* =========================================================
+   Easter Egg Catcher - style.css
+   Culori pastelate de Paște, animații CSS, design responsive
+   ========================================================= */
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #87CEEB;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ── Variabile culori ── */
+:root {
+    --sky-top:    #87CEEB;
+    --sky-bottom: #B0E2FF;
+    --grass:      #5DBB63;
+    --grass-dark: #3D8B40;
+    --pastel-pink:    #FFB7C5;
+    --pastel-yellow:  #FFEAA0;
+    --pastel-green:   #B5EAD7;
+    --pastel-blue:    #C7DCFF;
+    --pastel-purple:  #D4B8E0;
+    --pastel-orange:  #FFCBA4;
+    --gold:       #FFD700;
+    --shadow:     rgba(0,0,0,0.15);
+    --text-dark:  #3A2D1E;
+    --text-mid:   #5C4A30;
+    --white:      #FFFFFF;
+    --danger:     #FF6B6B;
+    --ui-bg:      rgba(255,255,255,0.88);
+}
+
+/* ── Screens (ecrane) ── */
+.screen {
+    position: fixed;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+.screen.active {
+    display: flex;
+}
+
+/* =========================================================
+   MENIU PRINCIPAL
+   ========================================================= */
+#screen-menu {
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 60%, var(--grass) 60%, var(--grass-dark) 100%);
+}
+
+/* Fundal decorativ */
+.menu-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Nori plutitori */
+.cloud {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0.7;
+    animation: floatCloud linear infinite;
+}
+.cloud-1 { top: 8%;  left: -60px; animation-duration: 18s; font-size: 2.5rem; }
+.cloud-2 { top: 18%; left: -80px; animation-duration: 25s; animation-delay: -8s; font-size: 3.5rem; }
+.cloud-3 { top: 30%; left: -60px; animation-duration: 20s; animation-delay: -14s; font-size: 2rem; }
+
+@keyframes floatCloud {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(100vw + 100px)); }
+}
+
+/* Ouă/flori plutitoare pe meniu */
+.floating-egg {
+    position: absolute;
+    font-size: 2rem;
+    animation: floatUpDown ease-in-out infinite;
+    pointer-events: none;
+}
+.fe-1 { left: 5%;  top: 20%; animation-duration: 3s;   animation-delay: 0s; }
+.fe-2 { left: 85%; top: 15%; animation-duration: 3.5s; animation-delay: -1s; }
+.fe-3 { left: 45%; top: 12%; animation-duration: 2.8s; animation-delay: -0.5s; }
+.fe-4 { left: 70%; top: 35%; animation-duration: 4s;   animation-delay: -2s; }
+.fe-5 { left: 15%; top: 40%; animation-duration: 3.2s; animation-delay: -1.5s; }
+.fe-6 { left: 60%; top: 25%; animation-duration: 3.8s; animation-delay: -0.8s; }
+
+@keyframes floatUpDown {
+    0%, 100% { transform: translateY(0)   rotate(-5deg); }
+    50%       { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* Conținut meniu */
+.menu-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 30px 20px 20px;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Titlu animat */
+.game-title {
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    color: var(--text-dark);
+    text-shadow: 2px 2px 0 #fff, 4px 4px 0 var(--pastel-pink);
+    text-align: center;
+    animation: titleBounce 2s ease-in-out infinite;
+    line-height: 1.2;
+}
+.title-bunny {
+    display: inline-block;
+    animation: bunnySway 1.5s ease-in-out infinite;
+}
+@keyframes bunnySway {
+    0%, 100% { transform: rotate(-10deg) scale(1.1); }
+    50%       { transform: rotate(10deg)  scale(1.2); }
+}
+@keyframes titleBounce {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.03); }
+}
+
+.game-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-mid);
+    text-align: center;
+}
+
+/* Box scor meniu */
+.menu-score-box {
+    background: var(--ui-bg);
+    border-radius: 16px;
+    padding: 12px 32px;
+    text-align: center;
+    box-shadow: 0 4px 12px var(--shadow);
+    border: 2px solid var(--gold);
+}
+.score-label { font-size: 0.85rem; color: var(--text-mid); }
+.score-value { font-size: 2rem; font-weight: 700; color: var(--text-dark); }
+
+/* Butoane */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    text-align: center;
+}
+.btn:hover  { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow); }
+.btn:active { transform: translateY(1px);  box-shadow: 0 2px 6px var(--shadow); }
+
+.btn-primary   { background: linear-gradient(135deg, #FF8FAB, #FF6B9D); color: #fff; box-shadow: 0 4px 12px rgba(255,107,157,0.4); }
+.btn-secondary { background: var(--ui-bg); color: var(--text-dark); box-shadow: 0 4px 12px var(--shadow); border: 2px solid #ddd; }
+.btn-danger    { background: linear-gradient(135deg, #FF6B6B, #EE4444); color: #fff; box-shadow: 0 4px 12px rgba(255,68,68,0.4); }
+
+/* Animație bounce buton start */
+.btn-bounce {
+    animation: btnPulse 2s ease-in-out infinite;
+}
+@keyframes btnPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(255,107,157,0.4); }
+    50%       { transform: scale(1.04); box-shadow: 0 8px 24px rgba(255,107,157,0.6); }
+}
+.btn-bounce:hover { animation: none; }
+
+/* Instrucțiuni meniu */
+.menu-instructions {
+    background: var(--ui-bg);
+    border-radius: 16px;
+    padding: 14px 20px;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 4px 12px var(--shadow);
+    font-size: 0.88rem;
+    color: var(--text-dark);
+    line-height: 1.7;
+}
+.menu-instructions h3 { margin-bottom: 6px; color: var(--text-dark); font-size: 0.95rem; }
+
+/* Iarbă jos */
+.grass-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 1.4rem;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* =========================================================
+   ECRANUL DE JOC
+   ========================================================= */
+#screen-game {
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 65%, var(--grass) 65%, var(--grass-dark) 100%);
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+}
+
+/* HUD */
+#hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 14px 6px;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(4px);
+    border-bottom: 2px solid rgba(255,255,255,0.5);
+    gap: 6px;
+    z-index: 100;
+    flex-shrink: 0;
+    width: 100%;
+}
+#hud-left, #hud-right, #hud-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+#hud-center {
+    flex: 1;
+    align-items: center;
+    gap: 2px;
+}
+.hud-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-mid);
+    line-height: 1;
+}
+.hud-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.1;
+}
+.hud-value-sm {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+#hud-level-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+#level-progress-bar {
+    width: 100%;
+    max-width: 120px;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 2px;
+}
+#level-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FF8FAB, #FF6B9D);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* Indicator power-up activ */
+#powerup-indicator {
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.72);
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+}
+#powerup-timer-bar {
+    width: 60px;
+    height: 4px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+    overflow: hidden;
+}
+#powerup-timer-fill {
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+/* Buton pauză */
+#btn-pause {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--ui-bg);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 110;
+    box-shadow: 0 2px 8px var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s;
+}
+#btn-pause:hover { transform: scale(1.1); }
+
+/* Zona de joc */
+#game-area {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Nori în joc */
+.game-cloud {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.6;
+    animation: floatCloud linear infinite;
+    top: 5%;
+    pointer-events: none;
+}
+.gc-1 { animation-duration: 22s; animation-delay: 0s;   top: 8%; font-size: 2.5rem; }
+.gc-2 { animation-duration: 18s; animation-delay: -7s;  top: 18%; }
+.gc-3 { animation-duration: 28s; animation-delay: -14s; top: 4%; font-size: 1.6rem; }
+
+/* Iarbă în ecranul de joc */
+#game-grass {
+    font-size: 1.2rem;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1;
+    pointer-events: none;
+    flex-shrink: 0;
+    padding-bottom: 2px;
+}
+
+/* ── Player (iepuraș) ── */
+#player {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: grab;
+    transition: left 0.05s linear;
+    z-index: 50;
+    width: 70px;
+}
+#player-body {
+    font-size: 2.4rem;
+    line-height: 1;
+    transition: transform 0.1s ease;
+}
+#player-basket {
+    font-size: 2rem;
+    line-height: 1;
+    margin-top: -8px;
+}
+#player.moving-left  #player-body { transform: scaleX(-1); }
+#player.moving-right #player-body { transform: scaleX(1); }
+
+/* Animație bounce la prindere */
+@keyframes playerCatch {
+    0%   { transform: translateX(-50%) scale(1); }
+    30%  { transform: translateX(-50%) scale(1.15) translateY(-5px); }
+    60%  { transform: translateX(-50%) scale(0.95) translateY(3px); }
+    100% { transform: translateX(-50%) scale(1); }
+}
+#player.catching {
+    animation: playerCatch 0.3s ease;
+}
+
+/* ── Ouă care cad ── */
+.egg {
+    position: absolute;
+    top: -50px;
+    font-size: 2rem;
+    text-align: center;
+    cursor: default;
+    pointer-events: none;
+    z-index: 40;
+    animation: eggWobble 0.8s ease-in-out infinite;
+    will-change: top, left;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    transform: translateX(-50%);
+}
+.egg-label {
+    font-size: 0.6rem;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border-radius: 4px;
+    padding: 1px 4px;
+    margin-top: -2px;
+    white-space: nowrap;
+}
+
+@keyframes eggWobble {
+    0%, 100% { transform: translateX(-50%) rotate(-8deg); }
+    50%       { transform: translateX(-50%) rotate(8deg); }
+}
+
+/* Tipuri de ouă – culori de fundal */
+.egg-normal  .egg-icon { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+.egg-red     .egg-icon { filter: drop-shadow(0 2px 6px #FF6B6B); }
+.egg-blue    .egg-icon { filter: drop-shadow(0 2px 6px #6BB5FF); }
+.egg-green   .egg-icon { filter: drop-shadow(0 2px 6px #6BFF6B); }
+.egg-yellow  .egg-icon { filter: drop-shadow(0 2px 6px #FFD700); }
+.egg-glitter .egg-icon { filter: drop-shadow(0 0 8px #FFEE44) drop-shadow(0 0 4px #FFFFFF); }
+.egg-golden  .egg-icon { filter: drop-shadow(0 0 10px var(--gold)) brightness(1.3); animation: goldenPulse 0.6s ease-in-out infinite; }
+.egg-bad     .egg-icon { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)) grayscale(1); }
+
+@keyframes goldenPulse {
+    0%, 100% { filter: drop-shadow(0 0 8px var(--gold)) brightness(1.2); transform: scale(1); }
+    50%       { filter: drop-shadow(0 0 16px var(--gold)) brightness(1.5); transform: scale(1.1); }
+}
+
+/* Power-ups */
+.powerup {
+    position: absolute;
+    font-size: 1.8rem;
+    pointer-events: none;
+    z-index: 42;
+    animation: powerupFloat 1s ease-in-out infinite alternate, eggWobble 1s ease-in-out infinite;
+    transform: translateX(-50%);
+    width: 40px;
+    text-align: center;
+    line-height: 1;
+}
+@keyframes powerupFloat {
+    from { filter: brightness(1);   drop-shadow(0 0 4px rgba(255,255,0,0.5)); }
+    to   { filter: brightness(1.3); drop-shadow(0 0 12px rgba(255,255,0,0.9)); }
+}
+
+/* ── Efecte vizuale ── */
+/* Efect scor popup */
+.score-popup {
+    position: absolute;
+    font-size: 1.2rem;
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 200;
+    animation: scoreFloat 1s ease-out forwards;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+}
+.score-popup.positive { color: #22CC44; }
+.score-popup.negative { color: #FF4444; }
+@keyframes scoreFloat {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    80%  { opacity: 0.8; transform: translateY(-50px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-70px) scale(0.8); }
+}
+
+/* Confetti/particule */
+.confetti-piece {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: confettiFall linear forwards;
+    z-index: 150;
+}
+@keyframes confettiFall {
+    0%   { transform: translateY(0) rotate(0deg) scale(1);   opacity: 1; }
+    100% { transform: translateY(80px) rotate(360deg) scale(0); opacity: 0; }
+}
+
+/* Shake screen */
+@keyframes screenShake {
+    0%, 100% { transform: translateX(0); }
+    20%  { transform: translateX(-8px); }
+    40%  { transform: translateX(8px); }
+    60%  { transform: translateX(-5px); }
+    80%  { transform: translateX(5px); }
+}
+#screen-game.shaking {
+    animation: screenShake 0.4s ease;
+}
+
+/* Flash rosie la pierdere viată */
+@keyframes redFlash {
+    0%   { background-color: rgba(255,0,0,0); }
+    30%  { background-color: rgba(255,0,0,0.3); }
+    100% { background-color: rgba(255,0,0,0); }
+}
+#screen-game.life-lost::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    animation: redFlash 0.5s ease forwards;
+    pointer-events: none;
+    z-index: 500;
+}
+
+/* ── Overlay (pauză, nivel nou) ── */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    backdrop-filter: blur(3px);
+}
+.overlay.hidden { display: none; }
+
+.overlay-box {
+    background: var(--ui-bg);
+    border-radius: 24px;
+    padding: 36px 40px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 220px;
+}
+.overlay-box h2 { font-size: 1.8rem; color: var(--text-dark); }
+
+/* Overlay nivel nou */
+.level-up-box {
+    animation: levelUpPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+@keyframes levelUpPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+.level-up-emoji { font-size: 3rem; animation: spinBounce 0.8s ease infinite; }
+@keyframes spinBounce {
+    0%, 100% { transform: rotate(-10deg) scale(1); }
+    50%       { transform: rotate(10deg)  scale(1.2); }
+}
+
+/* Particule nivel nou */
+.level-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 400;
+    font-size: 1.5rem;
+    animation: levelParticle 1.5s ease-out forwards;
+}
+@keyframes levelParticle {
+    0%   { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(0) rotate(var(--dr)); opacity: 0; }
+}
+
+/* =========================================================
+   ECRAN GAME OVER
+   ========================================================= */
+#screen-gameover {
+    background: linear-gradient(180deg, #FFB7C5 0%, #FFDDE6 50%, var(--grass) 80%, var(--grass-dark) 100%);
+}
+.gameover-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.gameover-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 40px 20px 80px;
+    width: 100%;
+    max-width: 480px;
+}
+.gameover-title {
+    font-size: clamp(2rem, 7vw, 3.2rem);
+    color: var(--text-dark);
+    text-shadow: 2px 2px 0 #fff;
+    text-align: center;
+}
+
+#new-highscore-banner {
+    background: linear-gradient(135deg, var(--gold), #FFB800);
+    color: var(--text-dark);
+    padding: 10px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 16px rgba(255,215,0,0.5);
+    animation: bannerPulse 1s ease-in-out infinite;
+}
+@keyframes bannerPulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.05); }
+}
+
+.result-box {
+    background: var(--ui-bg);
+    border-radius: 20px;
+    padding: 20px 28px;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 4px 16px var(--shadow);
+}
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+    color: var(--text-mid);
+}
+.result-row:last-child { border-bottom: none; }
+.result-row strong { font-size: 1.1rem; color: var(--text-dark); }
+
+.gameover-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+}
+
+/* =========================================================
+   ECRAN STATISTICI
+   ========================================================= */
+#screen-stats {
+    background: linear-gradient(180deg, var(--pastel-blue) 0%, var(--sky-bottom) 60%, var(--grass) 80%, var(--grass-dark) 100%);
+    overflow-y: auto;
+}
+.stats-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 30px 20px 100px;
+    width: 100%;
+    max-width: 560px;
+}
+.stats-content h2 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    text-shadow: 1px 1px 0 #fff;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+}
+.stat-card {
+    background: var(--ui-bg);
+    border-radius: 18px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 4px 12px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.stat-icon  { font-size: 2rem; }
+.stat-label { font-size: 0.8rem; color: var(--text-mid); }
+.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--text-dark); }
+
+/* =========================================================
+   MODAL SETĂRI
+   ========================================================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+.modal.hidden { display: none; }
+
+.modal-box {
+    background: var(--ui-bg);
+    border-radius: 24px;
+    padding: 36px 32px;
+    width: 90%;
+    max-width: 360px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.modal-box h2 {
+    font-size: 1.6rem;
+    color: var(--text-dark);
+    text-align: center;
+}
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+.setting-select {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    font-size: 0.9rem;
+    background: #fff;
+    cursor: pointer;
+}
+
+/* Toggle switch */
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    flex-shrink: 0;
+}
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+.toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: #ccc;
+    border-radius: 26px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.toggle-switch input:checked + .toggle-slider { background: #FF8FAB; }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(24px); }
+
+/* =========================================================
+   UTILITĂȚI
+   ========================================================= */
+.hidden { display: none !important; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* Tabletă */
+@media (min-width: 600px) {
+    .menu-content  { padding: 40px 30px 30px; }
+    .menu-buttons  { max-width: 320px; }
+    #hud           { padding: 10px 20px; }
+    .hud-value     { font-size: 1.5rem; }
+    #player        { width: 80px; }
+    #player-body   { font-size: 2.8rem; }
+    #player-basket { font-size: 2.4rem; }
+    .egg           { font-size: 2.2rem; width: 44px; }
+    .stats-grid    { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .menu-content  { padding: 50px 40px 40px; }
+    .menu-buttons  { max-width: 340px; }
+    .btn           { font-size: 1.1rem; padding: 16px 24px; }
+    #hud           { padding: 12px 24px; }
+    .hud-value     { font-size: 1.6rem; }
+    #player        { width: 90px; }
+    #player-body   { font-size: 3rem; }
+    #player-basket { font-size: 2.6rem; }
+    .egg           { font-size: 2.4rem; width: 48px; }
+    .powerup       { font-size: 2rem; width: 44px; }
+}
+
+/* Landscape mobil */
+@media (max-height: 500px) {
+    .menu-content   { padding: 12px 20px; gap: 8px; }
+    .game-title     { font-size: 1.4rem; }
+    .game-subtitle  { display: none; }
+    .menu-instructions { display: none; }
+    #hud            { padding: 4px 12px; }
+    .hud-value      { font-size: 1rem; }
+    #level-progress-bar { display: none; }
+    .grass-bottom   { font-size: 1rem; }
+}
+
+/* Ecrane mici (360px) */
+@media (max-width: 380px) {
+    .game-title    { font-size: 1.5rem; }
+    .menu-content  { padding: 20px 14px 14px; gap: 12px; }
+    .btn           { font-size: 0.9rem; padding: 12px 16px; }
+    #hud           { padding: 6px 10px; }
+    .hud-value     { font-size: 1.1rem; }
+    .stat-card     { padding: 12px 10px; }
+    .stat-value    { font-size: 1.2rem; }
+    .stats-grid    { gap: 8px; }
+}
