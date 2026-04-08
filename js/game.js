@@ -130,7 +130,15 @@
         for (var i = 0; i < elements.length; i++) {
             var key = elements[i].getAttribute('data-i18n');
             if (t[key] !== undefined) {
-                elements[i].innerHTML = t[key];
+                elements[i].textContent = t[key];
+            }
+        }
+        // Elementele cu markup HTML în traducere (instrucțiuni cu <strong>)
+        var htmlElements = document.querySelectorAll('[data-i18n-html]');
+        for (var j = 0; j < htmlElements.length; j++) {
+            var htmlKey = htmlElements[j].getAttribute('data-i18n-html');
+            if (t[htmlKey] !== undefined) {
+                htmlElements[j].innerHTML = t[htmlKey];
             }
         }
     }
